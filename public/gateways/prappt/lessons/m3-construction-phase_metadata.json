@@ -1,0 +1,15 @@
+{
+  "id": "m3-construction-phase",
+  "title": "The Construction Phase (The PrAPPt Script)",
+  "type": "lesson",
+  "tier": "foundational",
+  "keywords": ["Architecture: Reverse Engineering", "PrAPPt Formula", "Component Building"],
+  "edges": {
+    "forward": "m4-activation-iteration",
+    "back": "m2-discovery-phase",
+    "peer": ["prappt-cheatsheet"]
+  },
+  "concepts_mentioned": ["prappt-script", "reverse-engineering", "component-product", "component-regulation", "component-approach", "component-persona", "component-trigger", "aibou-partner"],
+  "link_count": 10,
+  "estimated_time": 25
+}

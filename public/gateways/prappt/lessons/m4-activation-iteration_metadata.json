@@ -1,0 +1,15 @@
+{
+  "id": "m4-activation-iteration",
+  "title": "Activation & Iteration (Execution)",
+  "type": "lesson",
+  "tier": "foundational",
+  "keywords": ["Activation: The Trigger", "Iteration: Patch Mentality", "Versioning"],
+  "edges": {
+    "forward": "prappt-cheatsheet",
+    "back": "m3-construction-phase",
+    "peer": ["resp-engr"]
+  },
+  "concepts_mentioned": ["aibou-partner", "prappt-script", "component-trigger", "component-regulation", "component-approach"],
+  "link_count": 7,
+  "estimated_time": 20
+}

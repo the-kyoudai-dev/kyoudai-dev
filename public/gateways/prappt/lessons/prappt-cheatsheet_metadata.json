@@ -1,0 +1,15 @@
+{
+  "id": "prappt-cheatsheet",
+  "title": "The PrAPPt Framework Cheatsheet",
+  "type": "reference",
+  "tier": "foundational",
+  "keywords": ["Master Formula", "Workflow Cheat Sheet", "Regulation Commands"],
+  "edges": {
+    "forward": "syllabus",
+    "back": "m4-activation-iteration",
+    "peer": ["m1-aibou-mindset", "m2-discovery-phase", "m3-construction-phase"]
+  },
+  "concepts_mentioned": ["aibou-partner", "prappt-script", "reverse-engineering", "component-product", "component-regulation", "component-approach", "component-persona", "component-trigger", "atomic-discovery"],
+  "link_count": 9,
+  "estimated_time": 5
+}

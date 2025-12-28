@@ -1,0 +1,15 @@
+{
+  "id": "m2-discovery-phase",
+  "title": "The Discovery Phase (Ideation & Refinement)",
+  "type": "lesson",
+  "tier": "foundational",
+  "keywords": ["[APPROACH]: Atomic Discovery", "Stream of Consciousness", "Reverse Engineering"],
+  "edges": {
+    "forward": "m3-construction-phase",
+    "back": "m1-aibou-mindset",
+    "peer": ["atomic-discovery"]
+  },
+  "concepts_mentioned": ["aibou-partner", "atomic-discovery", "reverse-engineering", "prappt-script", "component-product"],
+  "link_count": 6,
+  "estimated_time": 20
+}

@@ -1,0 +1,374 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { marked } from 'https://cdn.jsdelivr.net/npm/marked/+esm';
+
+// Fetch curriculum and lessons
+const curriculumRes = await fetch('http://localhost:4321/gateways/prappt/curriculum.json');
+const curriculum = await curriculumRes.json();
+
+const registryRes = await fetch('http://localhost:4321/gateways/prappt/registry.json');
+const registry = await registryRes.json();
+
+// Get initial lesson (m1-aibou-mindset)
+const initialLessonId = 'm1-aibou-mindset';
+let lessonContent = '';
+let currentLesson = curriculum.lessons[0];
+
+try {
+  const lessonRes = await fetch(`http://localhost:4321/gateways/prappt/lessons/${initialLessonId}.md`);
+  lessonContent = await lessonRes.text();
+} catch (e) {
+  lessonContent = '# Lesson not found';
+}
+
+// Parse wikilinks and convert to HTML
+function resolveWikilinks(markdown: string): string {
+  return markdown.replace(
+    /\[\[([-\w]+)(?:\|([^\]]+))?\]\]/g,
+    (match, id, displayText) => {
+      const display = displayText || id.replace(/-/g, ' ');
+      return `<a href="/prappt?lesson=${id}" class="wikilink">${display}</a>`;
+    }
+  );
+}
+
+const htmlContent = marked(resolveWikilinks(lessonContent));
+---
+
+<Layout title="PrAPPt Portal">
+  <div class="prappt-portal" style="--color-prappt: #00FFFF;">
+    {/* Header */}
+    <header class="prappt-header">
+      <h1>PrAPPt</h1>
+      <p class="tagline">Success is a response.</p>
+    </header>
+
+    <div class="prappt-container">
+      {/* Sidebar Navigation */}
+      <aside class="prappt-sidebar">
+        <nav class="lesson-nav">
+          <div class="nav-section">
+            <h3>Lessons</h3>
+            <ul>
+              {curriculum.lessons.map((lesson: any) => (
+                <li key={lesson.id}>
+                  <a 
+                    href={`/prappt?lesson=${lesson.id}`}
+                    class={`nav-link ${lesson.id === initialLessonId ? 'active' : ''}`}
+                  >
+                    {lesson.title}
+                  </a>
+                  {lesson.estimated_time && (
+                    <span class="time">{lesson.estimated_time} min</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <main class="prappt-main">
+        <div class="lesson-viewer">
+          <div class="lesson-content">
+            <Fragment set:html={htmlContent} />
+          </div>
+
+          {/* Navigation Controls */}
+          <div class="lesson-nav-controls">
+            {currentLesson.edges?.back && (
+              <a href={`/prappt?lesson=${currentLesson.edges.back}`} class="nav-btn btn-back">
+                ← Back
+              </a>
+            )}
+            {currentLesson.edges?.forward && (
+              <a href={`/prappt?lesson=${currentLesson.edges.forward}`} class="nav-btn btn-next">
+                Next → {curriculum.lessons.find((l: any) => l.id === currentLesson.edges.forward)?.title}
+              </a>
+            )}
+          </div>
+
+          {/* "Along the Lines" - Related Lessons */}
+          {currentLesson.edges?.peer && currentLesson.edges.peer.length > 0 && (
+            <div class="along-the-lines">
+              <h4>Along the Lines</h4>
+              <div class="peer-links">
+                {currentLesson.edges.peer.map((peerId: string) => {
+                  const peerLesson = curriculum.lessons.find((l: any) => l.id === peerId);
+                  return peerLesson ? (
+                    <a key={peerId} href={`/prappt?lesson=${peerId}`} class="peer-link">
+                      {peerLesson.title}
+                    </a>
+                  ) : null;
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <style define:vars={{colorPrappt: 'var(--color-prappt)'}}>
+    .prappt-portal {
+      --color-primary: var(--color-prappt, #00FFFF);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #000000;
+      color: #FFFFFF;
+    }
+
+    .prappt-header {
+      background: linear-gradient(90deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 0, 0, 1) 100%);
+      padding: 2rem;
+      border-bottom: 2px solid var(--color-primary);
+      text-align: center;
+    }
+
+    .prappt-header h1 {
+      font-size: 3rem;
+      font-family: 'Noto Mono', monospace;
+      font-weight: bold;
+      margin: 0;
+      color: #FFFFFF;
+    }
+
+    .tagline {
+      font-size: 1.25rem;
+      font-style: italic;
+      margin: 0.5rem 0 0 0;
+      color: var(--color-primary);
+    }
+
+    .prappt-container {
+      display: flex;
+      flex: 1;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .prappt-sidebar {
+      width: 20%;
+      min-width: 240px;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding-right: 2rem;
+    }
+
+    .lesson-nav h3 {
+      font-size: 1.25rem;
+      font-family: 'Noto Mono', monospace;
+      margin-bottom: 1rem;
+      color: var(--color-primary);
+    }
+
+    .lesson-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .lesson-nav li {
+      margin-bottom: 1rem;
+    }
+
+    .nav-link {
+      display: block;
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 0.5rem;
+      border-left: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      border-left-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .nav-link.active {
+      border-left-color: var(--color-primary);
+      color: var(--color-primary);
+      font-weight: bold;
+    }
+
+    .time {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-left: 0.5rem;
+    }
+
+    .prappt-main {
+      flex: 1;
+    }
+
+    .lesson-content {
+      font-size: 1.125rem;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    .lesson-content :global(h1),
+    .lesson-content :global(h2),
+    .lesson-content :global(h3) {
+      font-family: 'Noto Mono', monospace;
+      color: var(--color-primary);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .lesson-content :global(h1) {
+      font-size: 2rem;
+    }
+
+    .lesson-content :global(h2) {
+      font-size: 1.5rem;
+    }
+
+    .lesson-content :global(h3) {
+      font-size: 1.25rem;
+    }
+
+    .lesson-content :global(p) {
+      margin-bottom: 1rem;
+    }
+
+    .lesson-content :global(code) {
+      background: rgba(0, 255, 255, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-family: 'Noto Mono', monospace;
+      color: var(--color-primary);
+    }
+
+    .lesson-content :global(pre) {
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--color-primary);
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+
+    .wikilink {
+      color: var(--color-primary);
+      text-decoration: underline;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .wikilink:hover {
+      text-decoration: underline solid var(--color-primary);
+      opacity: 0.8;
+    }
+
+    .lesson-nav-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: space-between;
+    }
+
+    .nav-btn {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: 2px solid var(--color-primary);
+      color: var(--color-primary);
+      text-decoration: none;
+      font-family: 'Noto Mono', monospace;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: rgba(0, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .btn-next {
+      margin-left: auto;
+    }
+
+    .along-the-lines {
+      margin-top: 3rem;
+      padding: 1.5rem;
+      background: rgba(0, 255, 255, 0.05);
+      border-left: 4px solid var(--color-primary);
+      border-radius: 8px;
+    }
+
+    .along-the-lines h4 {
+      color: var(--color-primary);
+      margin: 0 0 1rem 0;
+      font-family: 'Noto Mono', monospace;
+    }
+
+    .peer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .peer-link {
+      color: var(--color-primary);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      padding: 0.5rem;
+    }
+
+    .peer-link:hover {
+      text-decoration: underline;
+      padding-left: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .prappt-container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .prappt-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0 0 1rem 0;
+      }
+
+      .prappt-header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+
+  <script>
+    // Client-side lesson loading
+    const searchParams = new URLSearchParams(window.location.search);
+    const lessonId = searchParams.get('lesson');
+
+    if (lessonId && lessonId !== 'm1-aibou-mindset') {
+      // Update sidebar active state
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(lessonId)) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Wikilink click handler
+    document.querySelectorAll('.wikilink').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        window.history.pushState({}, '', href);
+        // Reload to show new lesson
+        location.reload();
+      });
+    });
+  </script>
+</Layout>

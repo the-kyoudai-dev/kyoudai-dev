@@ -1,0 +1,35 @@
+{
+  "id": "m1-aibou-mindset",
+  "title": "The Aibou Mindset (Philosophy & Ethics)",
+  "type": "lesson",
+  "tier": "foundational",
+  "keywords": ["[PERSONA]: Mindset", "Manners as Inputs", "Vector Math"],
+  "edges": {
+    "forward": "m2-discovery-phase",
+    "back": "syllabus",
+    "peer": ["prappt-cheatsheet"]
+  },
+  "concepts_mentioned": ["aibou-partner", "prappt-script", "semantic-weight", "resp-engr", "component-regulation", "component-approach"],
+  "link_count": 9,
+  "estimated_time": 15,
+  "audit_log": [
+    {
+      "term": "AiBou",
+      "canonical_id": "aibou-partner",
+      "confidence": 1.0,
+      "location": "Part 1"
+    },
+    {
+      "term": "Semantic Weight",
+      "canonical_id": "semantic-weight",
+      "confidence": 1.0,
+      "location": "Part 2"
+    },
+    {
+      "term": "Response Engineering",
+      "canonical_id": "resp-engr",
+      "confidence": 1.0,
+      "location": "Part 2"
+    }
+  ]
+}

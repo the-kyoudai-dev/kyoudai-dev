@@ -1,0 +1,87 @@
+{
+  "lessons": [
+    {
+      "id": "m1-aibou-mindset",
+      "title": "The Aibou Mindset (Philosophy & Ethics)",
+      "type": "lesson",
+      "tier": "foundational",
+      "keywords": ["[PERSONA]: Mindset", "Manners as Inputs", "Vector Math"],
+      "edges": {
+        "forward": "m2-discovery-phase",
+        "back": "syllabus",
+        "peer": ["prappt-cheatsheet"]
+      },
+      "concepts_mentioned": ["aibou-partner", "prappt-script", "semantic-weight", "resp-engr", "component-regulation", "component-approach"],
+      "link_count": 9,
+      "estimated_time": 15
+    },
+    {
+      "id": "m2-discovery-phase",
+      "title": "The Discovery Phase (Ideation & Refinement)",
+      "type": "lesson",
+      "tier": "foundational",
+      "keywords": ["[APPROACH]: Atomic Discovery", "Stream of Consciousness", "Reverse Engineering"],
+      "edges": {
+        "forward": "m3-construction-phase",
+        "back": "m1-aibou-mindset",
+        "peer": ["atomic-discovery"]
+      },
+      "concepts_mentioned": ["aibou-partner", "atomic-discovery", "reverse-engineering", "prappt-script", "component-product"],
+      "link_count": 6,
+      "estimated_time": 20
+    },
+    {
+      "id": "m3-construction-phase",
+      "title": "The Construction Phase (The PrAPPt Script)",
+      "type": "lesson",
+      "tier": "foundational",
+      "keywords": ["Architecture: Reverse Engineering", "PrAPPt Formula", "Component Building"],
+      "edges": {
+        "forward": "m4-activation-iteration",
+        "back": "m2-discovery-phase",
+        "peer": ["prappt-cheatsheet"]
+      },
+      "concepts_mentioned": ["prappt-script", "reverse-engineering", "component-product", "component-regulation", "component-approach", "component-persona", "component-trigger", "aibou-partner"],
+      "link_count": 10,
+      "estimated_time": 25
+    },
+    {
+      "id": "m4-activation-iteration",
+      "title": "Activation & Iteration (Execution)",
+      "type": "lesson",
+      "tier": "foundational",
+      "keywords": ["Activation: The Trigger", "Iteration: Patch Mentality", "Versioning"],
+      "edges": {
+        "forward": "prappt-cheatsheet",
+        "back": "m3-construction-phase",
+        "peer": ["resp-engr"]
+      },
+      "concepts_mentioned": ["aibou-partner", "prappt-script", "component-trigger", "component-regulation", "component-approach"],
+      "link_count": 7,
+      "estimated_time": 20
+    },
+    {
+      "id": "prappt-cheatsheet",
+      "title": "The PrAPPt Framework Cheatsheet",
+      "type": "reference",
+      "tier": "foundational",
+      "keywords": ["Master Formula", "Workflow Cheat Sheet", "Regulation Commands"],
+      "edges": {
+        "forward": "syllabus",
+        "back": "m4-activation-iteration",
+        "peer": ["m1-aibou-mindset", "m2-discovery-phase", "m3-construction-phase"]
+      },
+      "concepts_mentioned": ["aibou-partner", "prappt-script", "reverse-engineering", "component-product", "component-regulation", "component-approach", "component-persona", "component-trigger", "atomic-discovery"],
+      "link_count": 9,
+      "estimated_time": 5
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "generated_by": "LinkWeaver",
+    "timestamp": "2025-12-28T09:14:00Z",
+    "portal_origin": "prappt",
+    "total_lessons": 5,
+    "total_time_estimate": 85
+  }
+}

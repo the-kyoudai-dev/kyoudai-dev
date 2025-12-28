@@ -1,29 +1,24 @@
-﻿# Dependencies
-node_modules/
-.pnpm-store/
-
-# Build outputs
+# build output
 dist/
-build/
+
+# generated types
 .astro/
 
-# Environment
-.env
-.env.local
-.env.*.local
+# dependencies
+node_modules/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
 .DS_Store
 
-# Logs
-*.log
-npm-debug.log*
-
-# Temp
-.cache/
-tmp/
+# jetbrains setting folder
+.idea/

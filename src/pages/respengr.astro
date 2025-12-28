@@ -1,0 +1,277 @@
+﻿---
+import '../styles/tokens.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RespEngr - KYOUDAI.dev</title>
+  <style>
+    :root {
+      --color-respengr: #FF00FF;
+      --color-black: #000000;
+      --color-white: #FFFFFF;
+      --color-dark-gray: #1A1A1A;
+      --font-mono: 'Noto Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: var(--font-mono);
+      background-color: var(--color-black);
+      color: var(--color-white);
+    }
+
+    /* ======================== */
+    /* HEADER                   */
+    /* ======================== */
+    .respengr-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: var(--color-dark-gray);
+      border-bottom: 2px solid var(--color-respengr);
+    }
+
+    .respengr-header-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .respengr-header-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    /* ======================== */
+    /* DESKTOP CONTAINER        */
+    /* ======================== */
+    .respengr-desktop {
+      width: 100%;
+      height: calc(100vh - 60px);
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      overflow-y: auto;
+      background-color: var(--color-black);
+    }
+
+    /* ======================== */
+    /* ICON GRID                */
+    /* ======================== */
+    .desktop-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .desktop-icon:hover {
+      opacity: 0.8;
+    }
+
+    .desktop-icon-box {
+      width: 80px;
+      height: 80px;
+      border: 2px solid var(--color-respengr);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--color-dark-gray);
+      font-size: 2.5rem;
+      border-radius: 4px;
+    }
+
+    .desktop-icon-label {
+      font-size: 0.75rem;
+      text-align: center;
+      max-width: 100px;
+      word-break: break-word;
+    }
+
+    /* ======================== */
+    /* PLACEHOLDER TEXT         */
+    /* ======================== */
+    .placeholder {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      opacity: 0.6;
+      font-size: 1.5rem;
+    }
+
+    /* ======================== */
+    /* MODAL                    */
+    /* ======================== */
+    .k-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .k-modal-overlay.active {
+      display: flex;
+    }
+
+    .k-modal {
+      background-color: var(--color-dark-gray);
+      border: 2px solid var(--color-white);
+      padding: 2rem;
+      max-width: 800px;
+      max-height: 80vh;
+      overflow-y: auto;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .k-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--color-white);
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 0;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .k-modal-close:hover {
+      color: var(--color-respengr);
+    }
+
+    /* ======================== */
+    /* BUTTON                   */
+    /* ======================== */
+    button {
+      font-family: var(--font-mono);
+      padding: 0.75rem 1.5rem;
+      border: 2px solid var(--color-respengr);
+      background-color: transparent;
+      color: var(--color-white);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--color-respengr);
+      color: var(--color-black);
+    }
+  </style>
+</head>
+<body>
+  <div class="respengr-header">
+    <div class="respengr-header-title">KYOUDAI.dev | RespEngr</div>
+    <div class="respengr-header-actions">
+      <button onclick="window.location.href='/'">← Back to Gateway</button>
+    </div>
+  </div>
+
+  <div class="respengr-desktop" id="respengrDesktop">
+    <!-- Icons will be loaded here by osWatcher -->
+    <div class="placeholder">
+      🔍 Watching for files in public/gateways/respengr/desktop/
+    </div>
+  </div>
+
+  <!-- Modal Overlay -->
+  <div class="k-modal-overlay" id="modalOverlay">
+    <div class="k-modal" id="modal">
+      <button class="k-modal-close" onclick="closeModal()">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    async function loadRegistry() {
+      try {
+        const response = await fetch('/gateways/respengr/filesystem.json');
+        const data = await response.json();
+        console.log('Registry loaded:', data);
+        renderDesktop(data);
+      } catch (error) {
+        console.error('Failed to load registry:', error);
+      }
+    }
+
+    function renderDesktop(registry) {
+      const desktop = document.getElementById('respengrDesktop');
+      desktop.innerHTML = '';
+
+      if (!registry.files || registry.files.length === 0) {
+        desktop.innerHTML = '<div class="placeholder">📁 No files found. Create articles in public/gateways/respengr/desktop/</div>';
+        return;
+      }
+
+      registry.files.forEach(file => {
+        const icon = document.createElement('div');
+        icon.className = 'desktop-icon';
+        icon.innerHTML = 
+          <div class="desktop-icon-box">📄</div>
+          <div class="desktop-icon-label">\</div>
+        ;
+        icon.onclick = () => loadFile(file);
+        desktop.appendChild(icon);
+      });
+    }
+
+    async function loadFile(file) {
+      try {
+        const response = await fetch(\/gateways/respengr/desktop/\/\\);
+        const markdown = await response.text();
+        
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = \
+          <h2>\</h2>
+          <pre>\</pre>
+        \;
+        
+        openModal();
+      } catch (error) {
+        console.error('Failed to load file:', error);
+      }
+    }
+
+    function openModal() {
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    // Load registry on page load
+    loadRegistry();
+
+    // Reload every 5 seconds (for osWatcher updates)
+    setInterval(loadRegistry, 5000);
+  </script>
+</body>
+</html>

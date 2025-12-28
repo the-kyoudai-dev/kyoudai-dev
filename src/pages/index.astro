@@ -1,0 +1,347 @@
+﻿---
+import '../styles/tokens.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KYOUDAI.dev - With joy as our telos</title>
+  <style>
+    :root {
+      --color-respengr: #FF00FF;
+      --color-prappt: #00FFFF;
+      --color-aiboumos: #8040C0;
+      --color-black: #000000;
+      --color-white: #FFFFFF;
+      --font-mono: 'Noto Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: var(--font-mono);
+      background-color: var(--color-black);
+      color: var(--color-white);
+      overflow: hidden;
+    }
+
+    /* ======================== */
+    /* GATEWAY CONTAINER        */
+    /* ======================== */
+    .gateway-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--color-black);
+    }
+
+    /* ======================== */
+    /* STATE 1: TITLE SCREEN    */
+    /* ======================== */
+    .gateway-state-1 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 1;
+      transition: opacity 1s ease-in-out;
+      z-index: 10;
+    }
+
+    .gateway-state-1.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .gateway-state-1-content {
+      text-align: center;
+    }
+
+    .gateway-state-1-title {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .gateway-state-1-tagline {
+      font-size: 1.25rem;
+      font-style: italic;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+    }
+
+    .gateway-state-1-subtitle {
+      font-size: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .gateway-state-1-footer {
+      position: absolute;
+      bottom: 2rem;
+      text-align: center;
+      font-size: 0.875rem;
+      opacity: 0.7;
+    }
+
+    /* ======================== */
+    /* STATE 2: TWO PORTALS     */
+    /* ======================== */
+    .gateway-state-2 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .gateway-state-2.fade-in {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .gateway-portal {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+    }
+
+    .gateway-portal:hover {
+      opacity: 0.9;
+    }
+
+    /* RespEngr Portal (Left - FUCHSIA) */
+    .gateway-portal-respengr {
+      background: linear-gradient(135deg, var(--color-respengr) 0%, #8040C0 100%);
+      opacity: 0.3;
+    }
+
+    .gateway-portal-respengr:hover .gateway-portal-text {
+      opacity: 1;
+    }
+
+    /* PrAPPt Portal (Right - TEAL) */
+    .gateway-portal-prappt {
+      background: linear-gradient(135deg, var(--color-prappt) 0%, #00AAFF 100%);
+      opacity: 0.3;
+    }
+
+    .gateway-portal-prappt:hover .gateway-portal-text {
+      opacity: 1;
+    }
+
+    .gateway-portal-text {
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 2;
+    }
+
+    .gateway-portal-text-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .gateway-portal-text-tagline {
+      font-size: 1.25rem;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+
+    .gateway-portal-text-subtitle {
+      font-size: 1.5rem;
+    }
+
+    /* Center AiBouMoS Text */
+    .gateway-aiboumos-text {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 2rem;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 20;
+      color: var(--color-black);
+      transition: all 0.3s ease;
+    }
+
+    .gateway-aiboumos-text:hover {
+      color: var(--color-aiboumos);
+      text-shadow: 0 0 10px var(--color-aiboumos);
+    }
+
+    /* ======================== */
+    /* STATE 3: AIBOUMOS PORTAL */
+    /* ======================== */
+    .gateway-state-3 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, var(--color-aiboumos) 0%, #6030A0 100%);
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      z-index: 15;
+      pointer-events: none;
+    }
+
+    .gateway-state-3.fade-in {
+      opacity: 0.3;
+      pointer-events: auto;
+    }
+
+    .gateway-state-3-content {
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .gateway-state-3-title {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .gateway-state-3-tagline {
+      font-size: 1.25rem;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    .gateway-state-3-subtitle {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .gateway-state-3-footer {
+      position: absolute;
+      bottom: 2rem;
+      text-align: center;
+      font-size: 0.875rem;
+      opacity: 0.7;
+    }
+
+    /* ======================== */
+    /* RESPONSIVE              */
+    /* ======================== */
+    @media (max-width: 768px) {
+      .gateway-state-1-title {
+        font-size: 2rem;
+      }
+      .gateway-state-1-subtitle {
+        font-size: 1.25rem;
+      }
+      .gateway-portal-text-title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="gateway-container">
+    <!-- STATE 1: TITLE SCREEN -->
+    <div class="gateway-state-1" id="gatewayState1">
+      <div class="gateway-state-1-content">
+        <h1 class="gateway-state-1-title">KYOUDAI.dev</h1>
+        <p class="gateway-state-1-tagline">"With joy as our telos."</p>
+        <h2 class="gateway-state-1-subtitle">Develop in a Thoughtful Generation</h2>
+      </div>
+      <div class="gateway-state-1-footer">
+        <p>Copyright est.2025 KYOUDAI.dev</p>
+        <p style="font-style: italic;">"UI will come. If AI build it." - Amukat</p>
+      </div>
+    </div>
+
+    <!-- STATE 2: TWO PORTALS + HIDDEN THIRD -->
+    <div class="gateway-state-2" id="gatewayState2">
+      <!-- RespEngr Portal (Left) -->
+      <div class="gateway-portal gateway-portal-respengr" onclick="navigateTo('/respengr')">
+        <div class="gateway-portal-text">
+          <div class="gateway-portal-text-title">RespEngr</div>
+          <div class="gateway-portal-text-tagline">"The path is made clear."</div>
+          <div class="gateway-portal-text-subtitle">Response Engineering</div>
+        </div>
+      </div>
+
+      <!-- Center AiBouMoS Text (clickable) -->
+      <div class="gateway-aiboumos-text" id="aiboumosTrigger" onclick="revealState3()">AiBouMoS</div>
+
+      <!-- PrAPPt Portal (Right) -->
+      <div class="gateway-portal gateway-portal-prappt" onclick="navigateTo('/prappt')">
+        <div class="gateway-portal-text">
+          <div class="gateway-portal-text-title">PrAPPt</div>
+          <div class="gateway-portal-text-tagline">"Success is a response."</div>
+          <div class="gateway-portal-text-subtitle">Prompt Application</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE 3: AIBOUMOS PORTAL -->
+    <div class="gateway-state-3" id="gatewayState3" onclick="navigateTo('/aiboumos')">
+      <div class="gateway-state-3-content">
+        <h1 class="gateway-state-3-title">AiBouMoS</h1>
+        <p class="gateway-state-3-tagline">"Let's engineer it!"</p>
+        <h2 class="gateway-state-3-subtitle">AiBou Mall of Services</h2>
+      </div>
+      <div class="gateway-state-3-footer">
+        <p>Copyright est.2025 KYOUDAI.dev</p>
+        <p style="font-style: italic;">"UI will come. If AI build it." - Amukat</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const state1 = document.getElementById('gatewayState1');
+    const state2 = document.getElementById('gatewayState2');
+    const state3 = document.getElementById('gatewayState3');
+
+    // Auto-transition from State 1 to State 2 after 3 seconds
+    setTimeout(() => {
+      state1.classList.add('fade-out');
+      state2.classList.add('fade-in');
+    }, 3000);
+
+    // Function to reveal State 3
+    function revealState3() {
+      state2.classList.remove('fade-in');
+      state2.style.opacity = '0';
+      state2.style.pointerEvents = 'none';
+      state3.classList.add('fade-in');
+    }
+
+    // Function to navigate
+    function navigateTo(path) {
+      window.location.href = path;
+    }
+  </script>
+</body>
+</html>

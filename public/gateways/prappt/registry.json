@@ -1,0 +1,108 @@
+{
+  "concepts": [
+    {
+      "canonical_id": "aibou-partner",
+      "canonical_title": "AiBou Partner",
+      "aliases": ["AiBou", "AiBous", "Partner", "Collaborator"],
+      "match_strategy": "case_insensitive_substring",
+      "definition_lesson_id": "m1-aibou-mindset",
+      "category": "KYOUDAI Core",
+      "notes": "Transition from 'tool' to 'partner' mindset."
+    },
+    {
+      "canonical_id": "resp-engr",
+      "canonical_title": "Response Engineering",
+      "aliases": ["RespEngr", "Response Engineer", "Response Engineering Joy"],
+      "match_strategy": "case_insensitive_substring",
+      "definition_lesson_id": "m1-aibou-mindset",
+      "category": "Philosophy",
+      "notes": "The practice of using natural language as source code."
+    },
+    {
+      "canonical_id": "atomic-discovery",
+      "canonical_title": "Atomic Discovery",
+      "aliases": ["Atomic Development", "Atomic Truths"],
+      "match_strategy": "case_insensitive_substring",
+      "definition_lesson_id": "m2-discovery-phase",
+      "category": "Methodology",
+      "notes": "Breaking complex problems into the smallest solvable units."
+    },
+    {
+      "canonical_id": "semantic-weight",
+      "canonical_title": "Semantic Weight",
+      "aliases": ["Semantic Shift", "Manners as Inputs", "Manners"],
+      "match_strategy": "case_insensitive_substring",
+      "definition_lesson_id": "m1-aibou-mindset",
+      "category": "Philosophy",
+      "notes": "Understanding that manners are technical vector inputs."
+    },
+    {
+      "canonical_id": "reverse-engineering",
+      "canonical_title": "Reverse Engineering",
+      "aliases": ["Product-First Design", "Product-First"],
+      "match_strategy": "case_insensitive_substring",
+      "definition_lesson_id": "m3-construction-phase",
+      "category": "Methodology",
+      "notes": "Defining the destination ([PRODUCT]) before the journey."
+    },
+    {
+      "canonical_id": "component-product",
+      "canonical_title": "[PRODUCT]",
+      "aliases": ["Product Component", "The Destination", "Deliverable"],
+      "match_strategy": "exact",
+      "definition_lesson_id": "m3-construction-phase",
+      "category": "PrAPPt Component",
+      "notes": "What exactly will be delivered?"
+    },
+    {
+      "canonical_id": "component-regulation",
+      "canonical_title": "[REGULATION]",
+      "aliases": ["Regulation Component", "The Conscience", "Safety Boundaries"],
+      "match_strategy": "exact",
+      "definition_lesson_id": "m3-construction-phase",
+      "category": "PrAPPt Component",
+      "notes": "Rules of engagement and safety boundaries."
+    },
+    {
+      "canonical_id": "component-approach",
+      "canonical_title": "[APPROACH]",
+      "aliases": ["Approach Component", "The Workflow", "The Path"],
+      "match_strategy": "exact",
+      "definition_lesson_id": "m3-construction-phase",
+      "category": "PrAPPt Component",
+      "notes": "The step-by-step path the AI follows."
+    },
+    {
+      "canonical_id": "component-persona",
+      "canonical_title": "[PERSONA]",
+      "aliases": ["Persona Component", "The Identity", "The Soul"],
+      "match_strategy": "exact",
+      "definition_lesson_id": "m3-construction-phase",
+      "category": "PrAPPt Component",
+      "notes": "Who the AI is and what it represents."
+    },
+    {
+      "canonical_id": "component-trigger",
+      "canonical_title": "[TRIGGER]",
+      "aliases": ["Trigger Component", "The Activator", "The Button"],
+      "match_strategy": "exact",
+      "definition_lesson_id": "m4-activation-iteration",
+      "category": "PrAPPt Component",
+      "notes": "The unique code that activates the script."
+    },
+    {
+      "canonical_id": "prappt-script",
+      "canonical_title": "PrAPPt Script",
+      "aliases": ["PrAPPt Framework", "PrAPPt Formula"],
+      "match_strategy": "case_insensitive_substring",
+      "definition_lesson_id": "m1-aibou-mindset",
+      "category": "Framework",
+      "notes": "The six-section framework for building Aibous."
+    }
+  ],
+  "metadata": {
+    "version": "0.1",
+    "generated_by": "LinkWeaver",
+    "timestamp": "2025-12-28T09:14:00Z"
+  }
+}

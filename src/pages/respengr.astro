@@ -1,4 +1,4 @@
-﻿---
+---
 import '../styles/tokens.css';
 ---
 
@@ -204,7 +204,7 @@ import '../styles/tokens.css';
   <!-- Modal Overlay -->
   <div class="k-modal-overlay" id="modalOverlay">
     <div class="k-modal" id="modal">
-      <button class="k-modal-close" onclick="closeModal()">×</button>
+      <button class="k-modal-close" onclick="window.closeModal()">×</button>
       <div id="modalContent"></div>
     </div>
   </div>
@@ -233,10 +233,10 @@ import '../styles/tokens.css';
       registry.files.forEach(file => {
         const icon = document.createElement('div');
         icon.className = 'desktop-icon';
-        icon.innerHTML = 
+        icon.innerHTML = `
           <div class="desktop-icon-box">📄</div>
-          <div class="desktop-icon-label">\</div>
-        ;
+          <div class="desktop-icon-label">${file.name}</div>
+        `;
         icon.onclick = () => loadFile(file);
         desktop.appendChild(icon);
       });
@@ -244,14 +244,14 @@ import '../styles/tokens.css';
 
     async function loadFile(file) {
       try {
-        const response = await fetch(\/gateways/respengr/desktop/\/\\);
+        const response = await fetch(`/gateways/respengr/desktop/${file.name}`);
         const markdown = await response.text();
         
         const modalContent = document.getElementById('modalContent');
-        modalContent.innerHTML = \
-          <h2>\</h2>
-          <pre>\</pre>
-        \;
+        modalContent.innerHTML = `
+          <h2>${file.name}</h2>
+          <pre>${markdown}</pre>
+        `;
         
         openModal();
       } catch (error) {
@@ -261,11 +261,27 @@ import '../styles/tokens.css';
 
     function openModal() {
       document.getElementById('modalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
 
-    function closeModal() {
+    window.closeModal = function() {
       document.getElementById('modalOverlay').classList.remove('active');
-    }
+      document.body.style.overflow = 'auto';
+    };
+
+    // Close modal when clicking overlay (not the modal itself)
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        window.closeModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        window.closeModal();
+      }
+    });
 
     // Load registry on page load
     loadRegistry();
